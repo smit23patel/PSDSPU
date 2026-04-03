@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}{{ product.name }} – Flipkart{% endblock %}
+{% block content %}
+<div style="background:#fff;padding:24px;box-shadow:0 1px 1px rgba(0,0,0,.16);border-radius:2px;margin-top:16px;">
+  <div style="display:flex;gap:40px;flex-wrap:wrap;">
+    <!-- Image -->
+    <div style="flex:0 0 340px;text-align:center;">
+      <img src="{{ product.image }}" alt="{{ product.name }}" style="max-width:100%;max-height:400px;object-fit:contain;"/>
+      <div style="display:flex;gap:12px;margin-top:20px;justify-content:center;">
+        <a href="/add/{{ product.id }}" class="add-to-cart-btn" style="padding:14px 40px;font-size:15px;background:#ff9f00;display:inline-block;">
+          <span class="material-icons" style="font-size:18px;vertical-align:middle">shopping_cart</span> ADD TO CART
+        </a>
+        <a href="/add/{{ product.id }}" class="add-to-cart-btn" style="padding:14px 40px;font-size:15px;background:#fb641b;display:inline-block;">
+          <span class="material-icons" style="font-size:18px;vertical-align:middle">flash_on</span> BUY NOW
+        </a>
+      </div>
+    </div>
+    <!-- Details -->
+    <div style="flex:1;min-width:280px;">
+      <h1 style="font-size:20px;font-weight:400;margin-bottom:8px;">{{ product.name }}</h1>
+      <div class="rating" style="margin-bottom:12px;">
+        <span class="stars">{{ product.rating }} <span class="material-icons" style="font-size:12px">star</span></span>
+        <span class="reviews">{{ "{:,}".format(product.review_count) }} ratings & reviews</span>
+      </div>
+      <div class="pricing" style="margin-bottom:8px;">
+        <span class="price" style="font-size:28px;">₹{{ "{:,}".format(product.price) }}</span>
+        {% if product.original_price %}
+        <span class="original-price" style="font-size:16px;">₹{{ "{:,}".format(product.original_price) }}</span>
+        <span class="discount" style="font-size:18px;color:#388e3c;font-weight:600;">{{ product.discount_percent }}% off</span>
+        {% endif %}
+      </div>
+      {% if product.original_price %}
+      <p style="font-size:13px;color:#388e3c;margin-bottom:16px;">You save ₹{{ "{:,}".format(product.original_price - product.price) }}</p>
+      {% endif %}
+      <hr style="border:none;border-top:1px solid #f0f0f0;margin:16px 0;"/>
+      <table style="font-size:14px;border-collapse:collapse;width:100%;">
+        <tr>
+          <td style="padding:8px 0;color:#878787;width:140px;">Delivery</td>
+          <td style="padding:8px 0;"><strong>Free Delivery</strong> for orders above ₹500</td>
+        </tr>
+        <tr>
+          <td style="padding:8px 0;color:#878787;">Seller</td>
+          <td style="padding:8px 0;"><span style="color:#2874f0;">RetailNet</span> <span style="color:#878787;font-size:12px;">(4.3 ★)</span></td>
+        </tr>
+        <tr>
+          <td style="padding:8px 0;color:#878787;">Description</td>
+          <td style="padding:8px 0;">{{ product.description }}</td>
+        </tr>
+        <tr>
+          <td style="padding:8px 0;color:#878787;">In Stock</td>
+          <td style="padding:8px 0;">
+            {% if product.in_stock %}
+              <span style="color:#388e3c;font-weight:500;">✓ In Stock</span>
+            {% else %}
+              <span style="color:#ff4343;">Out of Stock</span>
+            {% endif %}
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% if related %}
+<div class="section-container" style="margin-top:8px;">
+  <div class="section-title"><h2>Similar Products</h2></div>
+  <div class="product-grid">
+    {% for p in related %}
+    <div class="product-card">
+      <a href="/product/{{ p.id }}">
+        <div class="product-img-container">
+          <img class="product-img" src="{{ p.image }}" alt="{{ p.name }}"/>
+        </div>
+      </a>
+      <div class="product-details">
+        <a href="/product/{{ p.id }}"><p class="product-name">{{ p.name }}</p></a>
+        <div class="pricing">
+          <span class="price">₹{{ "{:,}".format(p.price) }}</span>
+          {% if p.discount_percent > 0 %}<span class="discount">{{ p.discount_percent }}% off</span>{% endif %}
+        </div>
+        <a href="/add/{{ p.id }}" class="add-to-cart-btn">ADD TO CART</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+{% endblock %}

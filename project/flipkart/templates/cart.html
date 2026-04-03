@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}Cart – Flipkart{% endblock %}
+{% block content %}
+<div class="cart-layout">
+  <div class="cart-left">
+    <div class="cart-box">
+      <div class="cart-header">
+        <h3>My Cart ({{ cart_items|length }} item{% if cart_items|length != 1 %}s{% endif %})</h3>
+      </div>
+      {% if cart_items %}
+        {% for ci in cart_items %}
+        <div class="cart-item">
+          <div class="cart-item-img">
+            <img src="{{ ci.product.image }}" alt="{{ ci.product.name }}"/>
+          </div>
+          <div class="cart-item-details" style="flex:1;">
+            <p class="cart-item-title"><a href="/product/{{ ci.product.id }}">{{ ci.product.name }}</a></p>
+            <p style="color:#878787;font-size:13px;margin-top:4px;">Seller: RetailNet</p>
+            <div class="cart-item-price">
+              <span>₹{{ "{:,}".format(ci.product.price) }}</span>
+              {% if ci.product.original_price %}
+              <span style="text-decoration:line-through;color:#878787;font-size:14px;">₹{{ "{:,}".format(ci.product.original_price) }}</span>
+              <span style="color:#388e3c;font-size:14px;">{{ ci.product.discount_percent }}% off</span>
+              {% endif %}
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;margin-top:12px;">
+              <form method="POST" action="/update_cart/{{ ci.product.id }}" style="display:inline;">
+                <input type="hidden" name="action" value="decrease"/>
+                <button type="submit" style="width:28px;height:28px;border-radius:50%;border:1px solid #c2c2c2;background:#fff;cursor:pointer;font-size:18px;line-height:1;">-</button>
+              </form>
+              <span style="font-size:16px;font-weight:500;min-width:24px;text-align:center;">{{ ci.cart.quantity }}</span>
+              <form method="POST" action="/update_cart/{{ ci.product.id }}" style="display:inline;">
+                <input type="hidden" name="action" value="increase"/>
+                <button type="submit" style="width:28px;height:28px;border-radius:50%;border:1px solid #c2c2c2;background:#fff;cursor:pointer;font-size:18px;line-height:1;">+</button>
+              </form>
+              <a href="/remove/{{ ci.product.id }}" style="margin-left:16px;color:#2874f0;font-size:14px;font-weight:500;">REMOVE</a>
+            </div>
+          </div>
+          <div style="min-width:100px;text-align:right;font-size:16px;font-weight:500;">
+            ₹{{ "{:,}".format(ci.total) }}
+          </div>
+        </div>
+        {% endfor %}
+        <div style="padding:16px 24px;text-align:right;">
+          <a href="/checkout" class="checkout-btn" style="display:inline-block;width:auto;padding:16px 64px;">PLACE ORDER</a>
+        </div>
+      {% else %}
+        <div class="empty-cart">
+          <span class="material-icons" style="font-size:80px;color:#c2c2c2;">shopping_cart</span>
+          <h3>Your cart is empty!</h3>
+          <p style="color:#878787;margin-bottom:20px;">Add items to it now.</p>
+          <a href="/">Shop Now</a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  {% if cart_items %}
+  <div class="cart-right">
+    <div class="cart-box">
+      <div class="cart-header">
+        <h3 style="color:#878787;font-size:14px;font-weight:500;text-transform:uppercase;">Price Details</h3>
+      </div>
+      <div class="cart-summary">
+        <div class="cart-summary-row">
+          <span>Price ({{ cart_items|length }} item{% if cart_items|length != 1 %}s{% endif %})</span>
+          <span>₹{{ "{:,}".format(subtotal) }}</span>
+        </div>
+        <div class="cart-summary-row">
+          <span>Delivery Charges</span>
+          <span style="color:#388e3c;">{% if delivery == 0 %}FREE{% else %}₹{{ delivery }}{% endif %}</span>
+        </div>
+        <div class="cart-total-row">
+          <span>Total Amount</span>
+          <span>₹{{ "{:,}".format(total) }}</span>
+        </div>
+        {% if subtotal > 0 and delivery == 0 %}
+        <p style="color:#388e3c;font-size:13px;margin-top:8px;">🎉 You'll save ₹{{ "{:,}".format(subtotal - total + delivery) }} on this order</p>
+        {% endif %}
+      </div>
+      <div style="padding:0 24px 16px;">
+        <a href="/checkout" class="checkout-btn" style="display:block;">PLACE ORDER</a>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

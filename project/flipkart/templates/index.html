@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Flipkart – Online Shopping{% endblock %}
+{% block content %}
+
+<!-- Categories -->
+<div class="categories">
+  {% for cat in categories %}
+  <a href="/search?cat={{ cat.id }}" class="category">
+    <img src="{{ cat.icon }}" alt="{{ cat.name }}"/>
+    <span>{{ cat.name }}</span>
+  </a>
+  {% endfor %}
+</div>
+
+<!-- Banner -->
+<div class="banner" style="border-radius:4px;overflow:hidden;margin-bottom:8px;">
+  <img class="banner-img" src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1400&h=300&q=80" alt="Sale Banner"/>
+</div>
+
+<!-- Products -->
+<div class="section-container">
+  <div class="section-title">
+    <h2>Today's Top Deals</h2>
+    <a href="/search" class="view-all-btn">VIEW ALL</a>
+  </div>
+  <div class="product-grid">
+    {% for p in products %}
+    <div class="product-card">
+      <a href="/product/{{ p.id }}">
+        <div class="product-img-container">
+          <img class="product-img" src="{{ p.image }}" alt="{{ p.name }}"/>
+          {% if p.discount_percent > 0 %}
+          <span style="position:absolute;top:8px;left:8px;background:#388e3c;color:#fff;font-size:11px;padding:2px 6px;border-radius:2px;font-weight:600;">{{ p.discount_percent }}% OFF</span>
+          {% endif %}
+        </div>
+      </a>
+      <div class="product-details">
+        <a href="/product/{{ p.id }}"><p class="product-name">{{ p.name }}</p></a>
+        <div class="rating">
+          <span class="stars">{{ p.rating }} <span class="material-icons" style="font-size:12px">star</span></span>
+          <span class="reviews">{{ "{:,}".format(p.review_count) }} ratings</span>
+        </div>
+        <div class="pricing">
+          <span class="price">₹{{ "{:,}".format(p.price) }}</span>
+          {% if p.original_price %}
+          <span class="original-price">₹{{ "{:,}".format(p.original_price) }}</span>
+          <span class="discount">{{ p.discount_percent }}% off</span>
+          {% endif %}
+        </div>
+        <p class="free-delivery">✓ Free Delivery</p>
+        <div class="action-btn">
+          <a href="/add/{{ p.id }}" class="add-to-cart-btn">
+            <span class="material-icons" style="font-size:16px;vertical-align:middle">shopping_cart</span>
+            ADD TO CART
+          </a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

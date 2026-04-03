@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}My Orders – Flipkart{% endblock %}
+{% block content %}
+<div style="max-width:860px;margin:24px auto;">
+  <h2 style="font-size:22px;font-weight:500;margin-bottom:16px;">My Orders</h2>
+  {% if orders %}
+    {% for order in orders %}
+    <div style="background:#fff;box-shadow:0 1px 1px rgba(0,0,0,.16);border-radius:2px;margin-bottom:16px;overflow:hidden;">
+      <div style="background:#f9f9f9;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #f0f0f0;">
+        <div>
+          <span style="font-size:13px;color:#878787;">ORDER # {{ order.id }}</span>
+          <span style="margin-left:16px;font-size:13px;color:#878787;">{{ order.placed_at.strftime('%d %b %Y') }}</span>
+        </div>
+        <span style="background:#e8f5e9;color:#2e7d32;padding:4px 10px;border-radius:12px;font-size:12px;font-weight:500;">{{ order.status }}</span>
+      </div>
+      {% for item in order.items %}
+      <div style="display:flex;gap:16px;padding:16px 20px;border-bottom:1px solid #f9f9f9;">
+        <img src="{{ item.product.image }}" style="width:64px;height:64px;object-fit:contain;"/>
+        <div style="flex:1;">
+          <p style="font-size:15px;font-weight:500;">{{ item.product.name }}</p>
+          <p style="font-size:13px;color:#878787;margin-top:4px;">Qty: {{ item.quantity }}</p>
+        </div>
+        <p style="font-size:15px;font-weight:500;">₹{{ "{:,}".format(item.price_at_purchase * item.quantity) }}</p>
+      </div>
+      {% endfor %}
+      <div style="padding:12px 20px;display:flex;justify-content:flex-end;font-size:15px;font-weight:500;">
+        Total: ₹{{ "{:,}".format(order.total) }}
+      </div>
+    </div>
+    {% endfor %}
+  {% else %}
+    <div style="background:#fff;text-align:center;padding:60px;box-shadow:0 1px 1px rgba(0,0,0,.16);">
+      <span class="material-icons" style="font-size:80px;color:#c2c2c2;">shopping_bag</span>
+      <h3 style="margin:16px 0 8px;">No orders yet</h3>
+      <p style="color:#878787;margin-bottom:24px;">Browse products and place your first order!</p>
+      <a href="/" style="background:#2874f0;color:#fff;padding:12px 32px;border-radius:2px;font-size:14px;font-weight:500;">SHOP NOW</a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

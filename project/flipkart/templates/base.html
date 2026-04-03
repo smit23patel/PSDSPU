@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{% block title %}Flipkart{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-container">
+    <div class="logo">
+      <a href="/">
+        <i>Flipkart</i>
+        <span class="explore-plus">Explore <span>Plus</span> <img src="https://static-assets-web.flixcart.com/fk-p-linchpin-web/fk-cp-zion/img/plus_aef861.png" width="10"/></span>
+      </a>
+    </div>
+
+    <form class="search-bar" action="/search" method="get">
+      <input type="text" name="q" placeholder="Search for products, brands and more" value="{{ search_query|default('') }}"/>
+      <button type="submit"><span class="material-icons" style="font-size:20px">search</span></button>
+    </form>
+
+    <div class="nav-links">
+      {% if current_user %}
+        <span class="nav-btn">
+          <span class="material-icons" style="font-size:18px">account_circle</span>
+          {{ current_user }}
+        </span>
+        <a href="/orders" class="nav-btn">Orders</a>
+        <a href="/logout" class="nav-btn">Logout</a>
+      {% else %}
+        <a href="/login" class="login-btn">Login</a>
+        <a href="/register" class="nav-btn">Register</a>
+      {% endif %}
+      <a href="/cart" class="nav-btn">
+        <span class="material-icons" style="font-size:20px">shopping_cart</span>
+        Cart
+        {% if cart_count > 0 %}<span style="background:#ff6161;color:#fff;border-radius:50%;padding:0 5px;font-size:11px;margin-left:2px">{{ cart_count }}</span>{% endif %}
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- FLASH MESSAGES -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div style="max-width:1248px;margin:8px auto;padding:0 8px;">
+      {% for cat, msg in messages %}
+        <div style="padding:10px 16px;border-radius:3px;margin-bottom:6px;font-size:14px;
+          background:{{'#e8f5e9' if cat=='success' else ('#fff3e0' if cat=='info' else '#ffebee')}};
+          color:{{'#2e7d32' if cat=='success' else ('#e65100' if cat=='info' else '#c62828')}};
+          border-left:4px solid {{'#43a047' if cat=='success' else ('#fb8c00' if cat=='info' else '#e53935')}};">
+          {{ msg }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<div class="main-content">
+  {% block content %}{% endblock %}
+</div>
+
+<footer class="footer">
+  <p>&copy; 2024 Flipkart Clone &mdash; Built with Flask &amp; SQLAlchemy</p>
+</footer>
+</body>
+</html>

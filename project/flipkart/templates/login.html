@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Login – Flipkart{% endblock %}
+{% block content %}
+<div class="auth-container">
+  <div class="auth-sidebar">
+    <h2>Login</h2>
+    <p>Get access to your Orders, Wishlist and Recommendations</p>
+    <div class="auth-sidebar-img">
+      <img src="https://static-assets-web.flixcart.com/fk-p-linchpin-web/fk-cp-zion/img/login_img_c4a81e.svg" width="150" alt=""/>
+    </div>
+  </div>
+  <div class="auth-content">
+    <form method="POST" class="auth-form">
+      <div class="auth-input-group">
+        <input type="text" name="username" id="username" required autocomplete="username"/>
+        <label for="username">Enter Username</label>
+      </div>
+      <div class="auth-input-group">
+        <input type="password" name="password" id="password" required autocomplete="current-password"/>
+        <label for="password">Enter Password</label>
+      </div>
+      <p style="font-size:12px;color:#878787;">By continuing, you agree to Flipkart's Terms of Use and Privacy Policy.</p>
+      <button type="submit" class="auth-submit-btn">LOGIN</button>
+    </form>
+    <div class="auth-links" style="margin-top:24px;text-align:center;">
+      <a href="/register">New to Flipkart? Create an account</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Register – Flipkart{% endblock %}
+{% block content %}
+<div class="auth-container">
+  <div class="auth-sidebar">
+    <h2>Looks like you're new here!</h2>
+    <p>Sign up with your details to get started</p>
+    <div class="auth-sidebar-img">
+      <img src="https://static-assets-web.flixcart.com/fk-p-linchpin-web/fk-cp-zion/img/login_img_c4a81e.svg" width="150" alt=""/>
+    </div>
+  </div>
+  <div class="auth-content">
+    <form method="POST" class="auth-form">
+      <div class="auth-input-group">
+        <input type="text" name="username" id="username" required autocomplete="username"/>
+        <label for="username">Username</label>
+      </div>
+      <div class="auth-input-group">
+        <input type="email" name="email" id="email" autocomplete="email"/>
+        <label for="email">Email (optional)</label>
+      </div>
+      <div class="auth-input-group">
+        <input type="password" name="password" id="password" required autocomplete="new-password"/>
+        <label for="password">Password</label>
+      </div>
+      <div class="auth-input-group">
+        <input type="password" name="confirm_password" id="confirm_password" required autocomplete="new-password"/>
+        <label for="confirm_password">Confirm Password</label>
+      </div>
+      <button type="submit" class="auth-submit-btn">CONTINUE</button>
+    </form>
+    <div class="auth-links" style="margin-top:24px;text-align:center;">
+      <a href="/login">Existing user? Log in</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

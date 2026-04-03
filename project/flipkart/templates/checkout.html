@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}Checkout – Flipkart{% endblock %}
+{% block content %}
+<div style="display:flex;gap:16px;margin-top:16px;flex-wrap:wrap;">
+  <!-- Delivery Address -->
+  <div style="flex:2;min-width:300px;">
+    <div style="background:#fff;box-shadow:0 1px 1px rgba(0,0,0,.16);border-radius:2px;padding:24px;margin-bottom:16px;">
+      <h3 style="font-size:18px;font-weight:500;margin-bottom:16px;border-bottom:1px solid #f0f0f0;padding-bottom:12px;">Delivery Address</h3>
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div style="display:flex;gap:12px;">
+          <div style="flex:1;">
+            <input type="text" placeholder="Full Name" style="width:100%;padding:10px;border:1px solid #e0e0e0;border-radius:2px;font-size:14px;outline:none;"/>
+          </div>
+          <div style="flex:1;">
+            <input type="text" placeholder="10-digit mobile number" style="width:100%;padding:10px;border:1px solid #e0e0e0;border-radius:2px;font-size:14px;outline:none;"/>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;">
+          <input type="text" placeholder="Pincode" style="flex:1;padding:10px;border:1px solid #e0e0e0;border-radius:2px;font-size:14px;outline:none;"/>
+          <input type="text" placeholder="Locality" style="flex:2;padding:10px;border:1px solid #e0e0e0;border-radius:2px;font-size:14px;outline:none;"/>
+        </div>
+        <textarea placeholder="Address (Area and Street)" rows="3" style="width:100%;padding:10px;border:1px solid #e0e0e0;border-radius:2px;font-size:14px;outline:none;resize:none;"></textarea>
+        <div style="display:flex;gap:12px;">
+          <input type="text" placeholder="City/District/Town" style="flex:1;padding:10px;border:1px solid #e0e0e0;border-radius:2px;font-size:14px;outline:none;"/>
+          <select style="flex:1;padding:10px;border:1px solid #e0e0e0;border-radius:2px;font-size:14px;outline:none;color:#555;">
+            <option value="">--State--</option>
+            <option>Maharashtra</option><option>Delhi</option><option>Karnataka</option>
+            <option>Tamil Nadu</option><option>Gujarat</option><option>Rajasthan</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Payment -->
+    <div style="background:#fff;box-shadow:0 1px 1px rgba(0,0,0,.16);border-radius:2px;padding:24px;">
+      <h3 style="font-size:18px;font-weight:500;margin-bottom:16px;border-bottom:1px solid #f0f0f0;padding-bottom:12px;">Payment Options</h3>
+      <div style="display:flex;flex-direction:column;gap:12px;font-size:15px;">
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+          <input type="radio" name="payment" value="upi" checked/> UPI
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+          <input type="radio" name="payment" value="card"/> Credit / Debit / ATM Card
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+          <input type="radio" name="payment" value="netbanking"/> Net Banking
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+          <input type="radio" name="payment" value="cod"/> Cash on Delivery
+        </label>
+      </div>
+      <form method="POST" action="/checkout" style="margin-top:24px;">
+        <button type="submit" class="checkout-btn" style="width:100%;border:none;cursor:pointer;">
+          CONFIRM ORDER &nbsp;(₹{{ "{:,}".format(subtotal) }})
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Order Summary -->
+  <div style="flex:1;min-width:260px;">
+    <div style="background:#fff;box-shadow:0 1px 1px rgba(0,0,0,.16);border-radius:2px;padding:16px;">
+      <h3 style="color:#878787;font-size:14px;font-weight:500;text-transform:uppercase;margin-bottom:12px;border-bottom:1px solid #f0f0f0;padding-bottom:8px;">Order Summary</h3>
+      {% for ci in cart_items %}
+      <div style="display:flex;gap:12px;padding:10px 0;border-bottom:1px dashed #f0f0f0;">
+        <img src="{{ ci.product.image }}" style="width:50px;height:50px;object-fit:contain;"/>
+        <div style="flex:1;font-size:13px;">
+          <p style="font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px;">{{ ci.product.name }}</p>
+          <p style="color:#878787;margin-top:4px;">Qty: {{ ci.cart.quantity }} × ₹{{ "{:,}".format(ci.product.price) }}</p>
+        </div>
+      </div>
+      {% endfor %}
+      <div style="display:flex;justify-content:space-between;padding:16px 0 0;font-size:16px;font-weight:600;">
+        <span>Total</span>
+        <span>₹{{ "{:,}".format(subtotal) }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
